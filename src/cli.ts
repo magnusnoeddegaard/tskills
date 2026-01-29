@@ -11,7 +11,7 @@ import { shareCommand, inviteCommand } from './commands/share.js';
 const program = new Command();
 
 program
-  .name('skillsync')
+  .name('tskills')
   .description('Sync private team AI skills across multiple tools')
   .version('0.1.0');
 

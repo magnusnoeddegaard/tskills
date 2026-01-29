@@ -160,8 +160,8 @@ export const setupCommand = new Command('setup')
         console.log(chalk.yellow('Note: Could not push (remote may have existing content)'));
       }
 
-      // Step 4: Configure skillsync
-      console.log(chalk.gray('Configuring skillsync...'));
+      // Step 4: Configure tskills
+      console.log(chalk.gray('Configuring tskills...'));
       await updateConfig({
         remote: {
           url: repoUrl,
@@ -171,10 +171,10 @@ export const setupCommand = new Command('setup')
 
       console.log(chalk.green('\nSetup complete!'));
       console.log(chalk.cyan('\nNext steps:'));
-      console.log(chalk.white('  1. Add skills:     skillsync add <skill-name>'));
-      console.log(chalk.white('  2. Import skills:  skillsync import <path-to-skills>'));
+      console.log(chalk.white('  1. Add skills:     tskills add <skill-name>'));
+      console.log(chalk.white('  2. Import skills:  tskills import <path-to-skills>'));
       console.log(chalk.white('  3. Push changes:   git add . && git commit -m "Add skills" && git push'));
-      console.log(chalk.white('  4. Sync to tools:  skillsync sync'));
+      console.log(chalk.white('  4. Sync to tools:  tskills sync'));
       console.log('');
       console.log(chalk.gray(`Repository: https://github.com/${repoFullName}`));
     } catch (error) {
@@ -218,7 +218,7 @@ async function checkRepoExists(fullName: string): Promise<boolean> {
 async function createRepo(name: string, isPrivate: boolean, org?: string): Promise<void> {
   const visibility = isPrivate ? '--private' : '--public';
   const orgFlag = org ? `--org ${org}` : '';
-  await execAsync(`gh repo create ${name} ${visibility} ${orgFlag} --description "Team AI skills for skillsync"`);
+  await execAsync(`gh repo create ${name} ${visibility} ${orgFlag} --description "Team AI skills for tskills"`);
 }
 
 async function checkIsGitRepo(dir: string): Promise<boolean> {
@@ -251,31 +251,31 @@ async function checkHasChanges(dir: string): Promise<boolean> {
 function getReadmeContent(repoFullName: string): string {
   return `# Team Skills
 
-Private AI skills shared across the team via [skillsync](https://github.com/anthropics/skillsync).
+Private AI skills shared across the team via [tskills](https://github.com/anthropics/tskills).
 
 ## Usage
 
 ### For team members
 
 \`\`\`bash
-# Install skillsync
-npm install -g skillsync
+# Install tskills
+npm install -g tskills
 
 # Configure to use this repo
-skillsync config --repo https://github.com/${repoFullName}.git
+tskills config --repo https://github.com/${repoFullName}.git
 
 # Sync skills to your local tools
-skillsync sync
+tskills sync
 \`\`\`
 
 ### Adding new skills
 
 \`\`\`bash
 # Create a new skill
-skillsync add <skill-name>
+tskills add <skill-name>
 
 # Or import existing skills
-skillsync import <path-to-skill>
+tskills import <path-to-skill>
 
 # Push to share with team
 git add . && git commit -m "Add skill" && git push
@@ -285,6 +285,6 @@ git add . && git commit -m "Add skill" && git push
 
 | Skill | Description |
 |-------|-------------|
-| (none yet) | Run \`skillsync add <name>\` to create one |
+| (none yet) | Run \`tskills add <name>\` to create one |
 `;
 }

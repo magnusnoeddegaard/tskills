@@ -1,11 +1,11 @@
-# Contributing to skillsync
+# Contributing to tskills
 
 Thanks for your interest in contributing!
 
 ## Getting Started
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/skillsync.git`
+2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/tskills.git`
 3. Install dependencies: `npm install`
 4. Build: `npm run build`
 5. Link for local testing: `npm link`
@@ -21,7 +21,7 @@ npm run dev      # Watch mode
 
 1. Create a branch: `git checkout -b feature/my-feature`
 2. Make your changes
-3. Test locally with `ss` commands
+3. Test locally with `ts` commands
 4. Commit with a clear message
 5. Push and open a Pull Request
 

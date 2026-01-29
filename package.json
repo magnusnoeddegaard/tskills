@@ -1,17 +1,23 @@
 {
-  "name": "skillsync",
+  "name": "tskills",
   "version": "0.1.0",
   "description": "Sync private team AI skills across multiple tools (Claude Code, Cursor, Copilot, Windsurf)",
   "type": "module",
   "main": "dist/cli.js",
   "bin": {
-    "skillsync": "./bin/skillsync.js",
-    "ss": "./bin/skillsync.js"
+    "tskills": "./bin/skillsync.js",
+    "ts": "./bin/skillsync.js"
   },
+  "files": [
+    "dist",
+    "bin",
+    "templates"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "start": "node dist/cli.js"
+    "start": "node dist/cli.js",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "ai",
@@ -19,11 +25,21 @@
     "claude",
     "cursor",
     "copilot",
+    "windsurf",
     "cli",
-    "team"
+    "team",
+    "developer-tools"
   ],
-  "author": "",
+  "author": "Magnus Noeddegaard",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/magnusnoeddegaard/tskills.git"
+  },
+  "bugs": {
+    "url": "https://github.com/magnusnoeddegaard/tskills/issues"
+  },
+  "homepage": "https://github.com/magnusnoeddegaard/tskills#readme",
   "dependencies": {
     "chalk": "^5.3.0",
     "commander": "^12.1.0",

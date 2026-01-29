@@ -4,7 +4,7 @@ import os from 'os';
 import { parse, stringify } from 'smol-toml';
 import type { Config } from '../types.js';
 
-const CONFIG_DIR = path.join(os.homedir(), '.skillsync');
+const CONFIG_DIR = path.join(os.homedir(), '.tskills');
 const CONFIG_FILE = path.join(CONFIG_DIR, 'config.toml');
 
 export async function ensureConfigDir(): Promise<void> {

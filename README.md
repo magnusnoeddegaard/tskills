@@ -1,17 +1,17 @@
-# skillsync
+# tskills
 
-Sync private team AI skills across multiple tools (Claude Code, Cursor, Copilot, Windsurf).
+Sync private team AI skills acrotsmultiple tools (Claude Code, Cursor, Copilot, Windsurf).
 
 ```bash
-npx skillsync setup    # Create GitHub repo + configure
-npx skillsync sync     # Sync skills to all your AI tools
+npx tskills setup    # Create GitHub repo + configure
+npx tskills sync     # Sync skills to all your AI tools
 ```
 
 ## Why?
 
 - **Public marketplaces** (Vercel Skills, etc.) are great, but you can't share proprietary team knowledge
-- **Repo-specific skills** work, but don't scale across projects
-- **skillsync** lets you maintain a private library of team skills and sync them everywhere
+- **Repo-specific skills** work, but don't scale acrotsprojects
+- **tskills** lets you maintain a private library of team skills and sync them everywhere
 
 ## Quick Start
 
@@ -19,51 +19,51 @@ npx skillsync sync     # Sync skills to all your AI tools
 
 ```bash
 # Creates a private GitHub repo and configures everything
-npx skillsync setup --name my-team-skills
+npx tskills setup --name my-team-skills
 ```
 
 ### 2. Add skills
 
 ```bash
 # Create a new skill
-ss add code-review
+tsadd code-review
 
 # Or import existing skills
-ss import ~/.claude/skills --recursive
+tsimport ~/.claude/skills --recursive
 ```
 
 ### 3. Share with your team
 
 ```bash
 # Invite colleagues to the private repo
-ss invite teammate-username
+tsinvite teammate-username
 
 # Get the setup command to share
-ss share --copy
+tsshare --copy
 ```
 
 ### 4. Sync
 
 ```bash
-ss sync                 # Sync to user-level (all projects)
-ss sync --scope project # Sync to current project only
+tssync                 # Sync to user-level (all projects)
+tssync --scope project # Sync to current project only
 ```
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `ss setup` | One-command setup: create GitHub repo, push, configure |
-| `ss init` | Initialize a skills repo locally (without GitHub) |
-| `ss add <name>` | Create a new skill from template |
-| `ss import <path>` | Import existing SKILL.md files |
-| `ss list` | List available skills |
-| `ss sync` | Pull from remote and sync to all tools |
-| `ss share` | Get shareable setup command for colleagues |
-| `ss invite <user>` | Add GitHub collaborator to private repo |
-| `ss config` | View/edit configuration |
+| `tssetup` | One-command setup: create GitHub repo, push, configure |
+| `tsinit` | Initialize a skills repo locally (without GitHub) |
+| `tsadd <name>` | Create a new skill from template |
+| `tsimport <path>` | Import existing SKILL.md files |
+| `tslist` | List available skills |
+| `tssync` | Pull from remote and sync to all tools |
+| `tsshare` | Get shareable setup command for colleagues |
+| `tsinvite <user>` | Add GitHub collaborator to private repo |
+| `tsconfig` | View/edit configuration |
 
-> **Tip:** `ss` is a built-in alias for `skillsync`
+> **Tip:** `ts` is a built-in alias for `tskills`
 
 ## Skill Format
 
@@ -94,7 +94,7 @@ When reviewing code, check for:
 
 ## Configuration
 
-Config is stored in `~/.skillsync/config.toml`:
+Config is stored in `~/.tskills/config.toml`:
 
 ```toml
 [remote]
@@ -114,10 +114,10 @@ windsurf = false
 Edit with:
 
 ```bash
-ss config --repo <url>           # Set remote repo
-ss config --default-scope user   # Set default scope
-ss config --cursor false         # Disable Cursor sync
-ss config --show                 # View current config
+tsconfig --repo <url>           # Set remote repo
+tsconfig --default-scope user   # Set default scope
+tsconfig --cursor false         # Disable Cursor sync
+tsconfig --show                 # View current config
 ```
 
 ## Requirements

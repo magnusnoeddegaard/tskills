@@ -23,7 +23,7 @@ export const shareCommand = new Command('share')
       const repoSpec = extractRepoSpec(repoUrl);
 
       // Generate the one-liner setup command
-      const setupCommand = `npx skillsync@latest config --repo ${repoUrl} && npx skillsync@latest sync`;
+      const setupCommand = `npx tskills@latest config --repo ${repoUrl} && npx tskills@latest sync`;
 
       console.log(chalk.cyan('\nShare this with your colleagues:\n'));
       console.log(chalk.white('─'.repeat(60)));
@@ -46,7 +46,7 @@ export const shareCommand = new Command('share')
         const isPrivate = await checkIfPrivate(repoSpec);
         if (isPrivate) {
           console.log(chalk.yellow('\n⚠ Your repo is private. Make sure to add collaborators:'));
-          console.log(chalk.white(`  skillsync invite <github-username>`));
+          console.log(chalk.white(`  tskills invite <github-username>`));
         }
       }
 
@@ -96,8 +96,8 @@ export const inviteCommand = new Command('invite')
       console.log(chalk.green(`\n✓ Invited ${username} with ${role} access!`));
       console.log(chalk.gray(`\nThey will receive an email invitation from GitHub.`));
       console.log(chalk.gray(`Once accepted, they can run:\n`));
-      console.log(chalk.yellow(`  npx skillsync@latest config --repo ${config.remote.url}`));
-      console.log(chalk.yellow(`  npx skillsync@latest sync`));
+      console.log(chalk.yellow(`  npx tskills@latest config --repo ${config.remote.url}`));
+      console.log(chalk.yellow(`  npx tskills@latest sync`));
 
     } catch (error) {
       const message = (error as Error).message;
