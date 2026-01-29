@@ -1,6 +1,6 @@
 {
   "name": "tskills",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Sync private team AI skills across multiple tools (Claude Code, Cursor, Copilot, Windsurf)",
   "type": "module",
   "main": "dist/cli.js",
