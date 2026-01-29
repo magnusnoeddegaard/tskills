@@ -1,6 +1,17 @@
-# tskills
+<div align="center">
 
-Sync private team AI skills across multiple tools (Claude Code, Cursor, Copilot, Windsurf).
+# 🔄 tskills
+
+**A package manager for private team AI skills.**
+
+Sync skills across Claude Code, Cursor, Copilot, and Windsurf with one command.
+
+[![npm version](https://img.shields.io/npm/v/tskills.svg)](https://www.npmjs.com/package/tskills)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+</div>
+
+---
 
 ```bash
 npx tskills setup    # Create GitHub repo + configure
