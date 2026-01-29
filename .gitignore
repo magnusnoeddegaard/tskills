@@ -23,7 +23,7 @@ npm-debug.log*
 .env.local
 
 # Package manager
-package-lock.json
+# package-lock.json  # Keep lock file for CI
 
 # Test artifacts
 coverage/
