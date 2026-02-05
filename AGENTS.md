@@ -26,11 +26,37 @@ ts --help
 
 ## Project Structure
 
-- `src/cli.ts` - Entry point, registers commands
-- `src/commands/` - Each file is a CLI command
+- `src/cli.ts` - Entry point, registers all commands (local + registry + org/team)
+- `src/types.ts` - TypeScript interfaces for skills, registry, orgs, teams, auth
+- `src/commands/` - Each file is a CLI command:
+  - **Registry:** `login`, `logout`, `whoami`, `publish`, `install`, `uninstall`, `search`, `info`, `outdated`, `update`, `deprecate`
+  - **Organizations/Teams:** `org` (subcommands: create, list, info, add, remove, delete), `team` (same subcommands)
+  - **Local/Legacy:** `setup`, `init`, `add`, `import`, `list`, `sync`, `share`, `config`
 - `src/adapters/` - Tool-specific output adapters (Claude, Cursor, Windsurf)
-- `src/lib/` - Shared utilities (config, git, skill parsing)
-- `src/types.ts` - TypeScript interfaces
+- `src/lib/` - Shared utilities:
+  - `config.ts` - Read/write `~/.tskills/config.toml`
+  - `discover.ts` - Auto-discover SKILL.md files
+  - `git.ts` - Clone/pull operations
+  - `skill.ts` - Parse SKILL.md with YAML frontmatter
+  - `credentials.ts` - Auth token storage (`~/.tskills/credentials.json`)
+  - `errors.ts` - Custom error classes (Auth, Network, Validation, RateLimit, Permission, etc.)
+  - `error-handler.ts` - Maps Supabase/Postgres/FS errors to custom errors
+  - `manifest.ts` - Tracks installed skills (`~/.tskills/installed.json`)
+  - `registry.ts` - Supabase client + full registry API (~1000 lines)
+  - `registry-config.ts` - Dynamic registry config with remote fetch + caching
+  - `retry.ts` - Retry with exponential backoff and jitter
+  - `validation.ts` - Input validation (skill names, semver, slugs, usernames)
+- `supabase/` - Supabase project config and 14 SQL migrations
+
+## Backend (Supabase)
+
+The registry backend is a Supabase project with:
+- **Postgres tables:** users, skills, skill_versions, organizations, org_members, teams, team_members, rate_limits
+- **Row Level Security (RLS):** visibility-based access control (public/private/org/team)
+- **RPC functions:** `check_rate_limit`, `increment_downloads`, `create_org_with_owner`
+- **GitHub OAuth** for authentication
+
+Migrations are in `supabase/migrations/`. Apply with `supabase db push`.
 
 ## Adding a New Command
 
@@ -40,8 +66,8 @@ ts --help
 
 ## Adding a New Tool Adapter
 
-1. Create `src/adapters/mytool.ts` extending `BaseAdapter`
-2. Implement `getSkillPath()`, `transform()`, and optionally `write()`
+1. Create `src/adapters/mytool.ts` implementing the `ToolAdapter` interface from `src/adapters/types.ts`
+2. Implement `getSkillPath()`, `transform()`, `write()`, and `remove()`
 3. Register in `src/adapters/index.ts`
 
 ## Testing
@@ -50,11 +76,20 @@ ts --help
 # Build first
 npm run build
 
-# Test commands locally
+# Test local commands
 ts init
 ts add test-skill
 ts list
 ts config --show
+
+# Test registry commands (requires login)
+tskills login
+tskills search "test"
+tskills whoami
+tskills logout
+
+# Test with verbose output
+tskills search "test" --verbose
 ```
 
 No automated test suite yet. Test manually before PRs.
@@ -66,6 +101,10 @@ No automated test suite yet. Test manually before PRs.
 - Async/await for all async operations
 - Use `chalk` for colored terminal output
 - Use `inquirer` for interactive prompts
+- Custom error classes from `src/lib/errors.ts` for typed error handling
+- Use `withErrorHandling()` wrapper from `src/lib/error-handler.ts` for command error handling
+- Use `withRetry()` from `src/lib/retry.ts` for retryable operations
+- Use validation functions from `src/lib/validation.ts` for user input
 
 ## PR Checklist
 
@@ -74,6 +113,7 @@ Before submitting:
 - [ ] Tested commands locally
 - [ ] Updated README.md if adding/changing commands
 - [ ] No secrets or credentials in code
+- [ ] New Supabase migrations added if schema changed
 
 ## Common Tasks
 
@@ -90,4 +130,9 @@ npm publish  # requires 2FA
 **Check what's published:**
 ```bash
 npm view tskills
+```
+
+**Apply database migrations:**
+```bash
+supabase db push
 ```

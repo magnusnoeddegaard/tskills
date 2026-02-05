@@ -60,6 +60,36 @@ ${skill.content}
 
     await fs.writeFile(rulesFile, existingContent.trim() + '\n', 'utf-8');
   }
+
+  async remove(skillName: string, scope: Scope): Promise<void> {
+    const basePath = this.getSkillPath(scope);
+    const rulesFile = path.join(basePath, '.windsurfrules');
+
+    try {
+      let content = await fs.readFile(rulesFile, 'utf-8');
+
+      const skillMarker = `<!-- skillsync:${skillName} -->`;
+      const skillEndMarker = `<!-- /skillsync:${skillName} -->`;
+      const markerRegex = new RegExp(
+        `\\n?${escapeRegex(skillMarker)}[\\s\\S]*?${escapeRegex(skillEndMarker)}\\n?`,
+        'g'
+      );
+
+      content = content.replace(markerRegex, '\n');
+      content = content.trim();
+
+      if (content) {
+        await fs.writeFile(rulesFile, content + '\n', 'utf-8');
+      } else {
+        // File is empty after removal, delete it
+        await fs.unlink(rulesFile);
+      }
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+        throw error;
+      }
+    }
+  }
 }
 
 function escapeRegex(str: string): string {

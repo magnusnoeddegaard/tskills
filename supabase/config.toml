@@ -1,0 +1,36 @@
+# Supabase Configuration for tskills Registry
+# Project: fdfhydiwtccwcjwczkul
+# URL: https://fdfhydiwtccwcjwczkul.supabase.co
+
+[project]
+id = "fdfhydiwtccwcjwczkul"
+
+[api]
+# Port to use for the API URL.
+port = 54321
+# Schemas to expose in your API. Tables, views and stored procedures in this schema will get API endpoints.
+schemas = ["public"]
+# Extra schemas to add to the search_path of every request.
+extra_search_path = ["public", "extensions"]
+# The maximum number of rows returned from a view, table, or stored procedure.
+max_rows = 1000
+
+[db]
+# Port to use for the local database URL.
+port = 54322
+# The database major version to use.
+major_version = 15
+
+[auth]
+# The base URL of the Auth server.
+site_url = "http://localhost:3000"
+# Additional redirect URLs allowed for OAuth.
+additional_redirect_urls = ["http://localhost:54321/callback"]
+# JWT expiry time in seconds.
+jwt_expiry = 3600
+# Enable email confirmation requirement.
+enable_signup = true
+
+[auth.external.github]
+enabled = true
+# Client ID and secret are configured in Supabase dashboard

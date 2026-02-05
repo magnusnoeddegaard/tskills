@@ -5,6 +5,7 @@ import chalk from 'chalk';
 import inquirer from 'inquirer';
 import { getSkillTemplate } from '../lib/skill.js';
 import { skillExists } from '../lib/discover.js';
+import { validateSkillName, SKILL_NAME_REGEX } from '../lib/validation.js';
 
 export const addCommand = new Command('add')
   .description('Add a new skill to the repository')
@@ -32,7 +33,7 @@ export const addCommand = new Command('add')
             message: 'Skill name (lowercase, hyphens only):',
             validate: (input: string) => {
               if (!input) return 'Name is required';
-              if (!/^[a-z][a-z0-9-]*$/.test(input)) {
+              if (!SKILL_NAME_REGEX.test(input)) {
                 return 'Name must be lowercase, start with a letter, and contain only letters, numbers, and hyphens';
               }
               return true;
@@ -43,10 +44,7 @@ export const addCommand = new Command('add')
       }
 
       // Validate name format
-      if (!/^[a-z][a-z0-9-]*$/.test(skillName)) {
-        console.error(chalk.red('Error: Skill name must be lowercase, start with a letter, and contain only letters, numbers, and hyphens'));
-        process.exit(1);
-      }
+      validateSkillName(skillName);
 
       // Check if skill already exists
       if (await skillExists(skillsDir, skillName)) {

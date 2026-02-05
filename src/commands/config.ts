@@ -1,6 +1,7 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { readConfig, updateConfig, getConfigPath, getDefaultConfig } from '../lib/config.js';
+import { validateScope } from '../lib/validation.js';
 import type { Config } from '../types.js';
 
 export const configCommand = new Command('config')
@@ -42,11 +43,8 @@ export const configCommand = new Command('config')
       }
 
       if (options.defaultScope) {
-        if (!['user', 'project'].includes(options.defaultScope)) {
-          console.error(chalk.red('Error: scope must be "user" or "project"'));
-          process.exit(1);
-        }
-        updates.defaults = { scope: options.defaultScope };
+        const validatedScope = validateScope(options.defaultScope);
+        updates.defaults = { scope: validatedScope };
       }
 
       const toolOptions = ['claude', 'cursor', 'copilot', 'windsurf'];

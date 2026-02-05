@@ -54,4 +54,17 @@ ${skill.content}
     await fs.mkdir(basePath, { recursive: true });
     await fs.writeFile(skillFile, this.transform(skill), 'utf-8');
   }
+
+  async remove(skillName: string, scope: Scope): Promise<void> {
+    const basePath = this.getSkillPath(scope);
+    const skillFile = path.join(basePath, `${skillName}.mdc`);
+
+    try {
+      await fs.unlink(skillFile);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+        throw error;
+      }
+    }
+  }
 }

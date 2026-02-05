@@ -5,6 +5,7 @@ import { readConfig } from '../lib/config.js';
 import { cloneOrPull } from '../lib/git.js';
 import { discoverSkills } from '../lib/discover.js';
 import { getEnabledAdapters } from '../adapters/index.js';
+import { validateScope } from '../lib/validation.js';
 import type { Scope } from '../types.js';
 
 export const syncCommand = new Command('sync')
@@ -21,11 +22,7 @@ export const syncCommand = new Command('sync')
         process.exit(1);
       }
 
-      const scope: Scope = options.scope || config.defaults?.scope || 'user';
-      if (!['user', 'project'].includes(scope)) {
-        console.error(chalk.red('Error: scope must be "user" or "project"'));
-        process.exit(1);
-      }
+      const scope: Scope = validateScope(options.scope || config.defaults?.scope || 'user');
 
       console.log(chalk.cyan(`Syncing from: ${config.remote.url}`));
       console.log(chalk.gray(`Branch: ${config.remote.branch || 'main'}`));

@@ -20,4 +20,20 @@ export abstract class BaseAdapter implements ToolAdapter {
     await fs.mkdir(skillDir, { recursive: true });
     await fs.writeFile(skillFile, this.transform(skill), 'utf-8');
   }
+
+  async remove(skillName: string, scope: Scope): Promise<void> {
+    const { promises: fs } = await import('fs');
+    const path = await import('path');
+
+    const basePath = this.getSkillPath(scope);
+    const skillDir = path.join(basePath, skillName);
+
+    try {
+      await fs.rm(skillDir, { recursive: true });
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+        throw error;
+      }
+    }
+  }
 }
