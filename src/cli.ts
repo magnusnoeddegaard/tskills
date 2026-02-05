@@ -1,4 +1,8 @@
+import { createRequire } from 'module';
 import { Command } from 'commander';
+
+const require = createRequire(import.meta.url);
+const pkg = require('../package.json');
 import { configCommand } from './commands/config.js';
 import { initCommand } from './commands/init.js';
 import { addCommand } from './commands/add.js';
@@ -28,7 +32,7 @@ const program = new Command();
 program
   .name('tskills')
   .description('Sync private team AI skills across multiple tools')
-  .version('0.1.0')
+  .version(pkg.version)
   .option('-v, --verbose', 'Show detailed error information');
 
 /**
