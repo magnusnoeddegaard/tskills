@@ -2,7 +2,6 @@ import { Command } from 'commander';
 import chalk from 'chalk';
 import open from 'open';
 import http from 'http';
-import crypto from 'crypto';
 import { createClient } from '@supabase/supabase-js';
 import { saveCredentials, getCredentials } from '../lib/credentials.js';
 import { getSupabaseUrl, getSupabaseAnonKey } from '../lib/registry.js';
@@ -49,16 +48,14 @@ export const loginCommand = new Command('login')
 
       console.log(chalk.cyan('Opening browser for GitHub authentication...'));
 
-      // Generate CSRF state parameter
-      const oauthState = crypto.randomBytes(32).toString('hex');
-
       // Generate the OAuth URL
+      // Note: Supabase handles its own OAuth state/PKCE internally.
+      // Passing a custom `state` via queryParams conflicts with it and causes bad_oauth_state errors.
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
         options: {
           redirectTo: `http://localhost:${CALLBACK_PORT}${CALLBACK_PATH}`,
           skipBrowserRedirect: true,
-          queryParams: { state: oauthState },
         },
       });
 
@@ -81,17 +78,7 @@ export const loginCommand = new Command('login')
             req.on('data', (chunk: Buffer) => { body += chunk.toString(); });
             req.on('end', async () => {
               try {
-                const { access_token: accessToken, refresh_token: refreshToken, state } = JSON.parse(body);
-
-                // Validate CSRF state
-                if (state !== oauthState) {
-                  res.writeHead(403, { 'Content-Type': 'application/json' });
-                  res.end(JSON.stringify({ success: false, error: 'Invalid state parameter' }));
-                  cleanup();
-                  console.error(chalk.red('Login failed: CSRF state mismatch'));
-                  process.exit(1);
-                  return;
-                }
+                const { access_token: accessToken, refresh_token: refreshToken } = JSON.parse(body);
 
                 if (!accessToken || !refreshToken) {
                   res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -182,16 +169,13 @@ export const loginCommand = new Command('login')
                       document.body.innerHTML = '<h1 style="color: #ef4444;">Login failed</h1><p>Could not extract tokens.</p>';
                       return;
                     }
-                    // Extract actual state from the redirect URL (hash fragment or query string)
-                    const actualState = params.get('state') || new URLSearchParams(window.location.search).get('state') || '';
                     try {
                       const res = await fetch('/callback', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                           access_token: accessToken,
-                          refresh_token: refreshToken,
-                          state: actualState
+                          refresh_token: refreshToken
                         })
                       });
                       const data = await res.json();
