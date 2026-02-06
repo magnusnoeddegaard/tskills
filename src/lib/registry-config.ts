@@ -30,7 +30,7 @@ const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 const FALLBACK_CONFIG: RegistryConfig = {
   supabaseUrl: 'https://fdfhydiwtccwcjwczkul.supabase.co',
   supabaseAnonKey:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkZmh5ZGl3dGNjd2Nqd2N6a3VsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgxNjM2NjMsImV4cCI6MjA1MzczOTY2M30.vGJ4dMR-G1lPLvHv8jqQ_J-YkYrQdVpH9TtLKmN-QGE',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkZmh5ZGl3dGNjd2Nqd2N6a3VsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxMDMzODQsImV4cCI6MjA4NTY3OTM4NH0.W6LzaxvkqnqGdWsr7zhFWxEHfJzqjcqqa3j9cR8fk_E',
 };
 
 export interface RegistryConfig {
